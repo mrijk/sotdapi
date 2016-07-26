@@ -29,6 +29,11 @@ app.get('/sergeant/today', (req, res) => {
     res.send({name: randomSergeant()});
 });
 
+app.param(['name'], (req, res, next, value) => {
+    console.log('Called with ' + value);
+    next();
+});
+
 // return schedule for given sergeant
 app.get('/schedule/:name', (req, res) => {
     res.send(req.name);
