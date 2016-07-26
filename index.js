@@ -11,7 +11,8 @@ const sergeants = [
     'Diego',
     'Tobias',
     'Denny',
-    'Chris O'
+    'Chris O',
+    'Robert'
 ];
 
 app.set('port', process.env.PORT || 5000);
