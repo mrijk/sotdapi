@@ -80,8 +80,7 @@ app.post('/schedule', (req, res) => {
     const slot2 = _.find(schedule, slot => _.isEqual(slot, body.slot2));
 
     if (_.isUndefined(slot1) || _.isUndefined(slot2)) {
-        // TODO: return some error code
-        res.send('duh');
+        res.status(500).send('Could not find one of the 2 slots!');
     } else {
         const name = slot1.name;
         slot1.name = slot2.name;
