@@ -1,9 +1,11 @@
 'use strict';
 
 const _ = require('lodash');
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
+
+// List of available sergeants
 
 const sergeants = [
     'Olaf',
@@ -15,7 +17,10 @@ const sergeants = [
     'Robert'
 ];
 
-const schedule = [];
+// (Static) schedule 
+
+const schedule = [
+];
 
 app.set('port', process.env.PORT || 5000);
 
@@ -30,15 +35,31 @@ app.get('/sergeant/today', (req, res) => {
 });
 
 app.param(['name'], (req, res, next, value) => {
-    console.log('Called with ' + value);
+    req.sergeant = value;
     next();
 });
 
 // return schedule for given sergeant
-app.get('/schedule/:name', (req, res) => {
-    res.send(req.name);
+app.get('/schedule', (req, res) => {
+    const dummySchedule = [
+        {
+            date: '2016-07-26AM',
+            name: 'Olaf'
+        },
+        {
+            date: '2016-07-26PM',
+            name: 'Maurits'
+        }
+
+    ];
+    res.send({schedule: dummySchedule});
 });
 
+// return schedule for given sergeant
+app.get('/schedule/:name', (req, res) => {
+    res.send({schedule: req.sergeant});
+});
+    
 app.listen(app.get('port'), () => {
     console.log('Node app is running on port', app.get('port'));
 });
