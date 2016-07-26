@@ -16,6 +16,10 @@ const sergeants = [
 
 app.set('port', process.env.PORT || 5000);
 
+app.get('/sergeant/list', (req, res) => {
+    res.send({names: sergeants});
+});
+
 app.get('/sergeant/today', (req, res) => {
     res.send({name: randomSergeant()});
 });
