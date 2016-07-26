@@ -29,15 +29,29 @@ app.get('/sergeant/list', (req, res) => {
     res.send({names: sergeants});
 });
 
-// Return sergeant of the day
+// Return sergeants of the day
 app.get('/sergeant/today', (req, res) => {
 
     const now = new Date();
     const date = dateFormat(now, 'yyyy-mm-dd');
 
-    const todaySchedule = _.filter(schedule, {date: date});
+    const today = _.filter(schedule, {date: date});
+    const omitDay = _.partialRight(_.omit, 'date');
+
+    res.send(_.map(today, omitDay));
+});
+
+// Return current sergeant
+app.get('/sergeant/now', (req, res) => {
+
+    const now = new Date();
+    const date = dateFormat(now, 'yyyy-mm-dd');
+    const ampm = dateFormat(now, 'TT');
+
+    const today = _.filter(schedule, {date: date, ampm: ampm});
+    const name = _.first(today).name;
     
-    res.send({name: todaySchedule});
+    res.send({name: name});
 });
 
 app.param(['name'], (req, res, next, value) => {
@@ -71,8 +85,4 @@ init();
 
 function addEntryToSchedule(date, ampm, name) {
     schedule.push({date: date, ampm: ampm, name: name});
-}
-
-function randomSergeant() {
-    return sergeants[_.random(sergeants.length - 1)];
 }
