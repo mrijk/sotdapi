@@ -52,17 +52,30 @@ app.get('/schedule', (req, res) => {
         }
 
     ];
-    res.send({schedule: dummySchedule});
+    res.send({schedule: schedule});
 });
 
 // return schedule for given sergeant
 app.get('/schedule/:name', (req, res) => {
     res.send({schedule: req.sergeant});
 });
+
+function init() {
+    addEntryToSchedule('2016-07-26AM', 'Olaf');
+    addEntryToSchedule('2016-07-26PM', 'Maurits');
+    addEntryToSchedule('2016-07-27AM', 'Danny');
+    addEntryToSchedule('2016-07-27PM', 'Olaf');
     
-app.listen(app.get('port'), () => {
-    console.log('Node app is running on port', app.get('port'));
-});
+    app.listen(app.get('port'), () => {
+        console.log('Node app is running on port', app.get('port'));
+    });
+}
+
+init();
+
+function addEntryToSchedule(date, name) {
+    schedule.push({date: date, name: name});
+}
 
 function randomSergeant() {
     return sergeants[_.random(sergeants.length - 1)];
