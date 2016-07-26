@@ -2,9 +2,12 @@
 
 const _ = require('lodash');
 const dateFormat = require('dateformat');
+const bodyParser = require('body-parser');
 const express = require('express');
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // List of available sergeants
 
@@ -59,7 +62,7 @@ app.param(['name'], (req, res, next, value) => {
     next();
 });
 
-// return schedule for given sergeant
+// return complete schedule
 app.get('/schedule', (req, res) => {
     res.send({schedule: schedule});
 });
@@ -68,6 +71,24 @@ app.get('/schedule', (req, res) => {
 app.get('/schedule/:name', (req, res) => {
     const mySchedule = _.filter(schedule, {name: req.name});
     res.send({schedule: mySchedule});
+});
+
+// update schedule
+app.post('/schedule', (req, res) => {
+    const body = req.body;
+    const slot1 = _.find(schedule, slot => _.isEqual(slot, body.slot1));
+    const slot2 = _.find(schedule, slot => _.isEqual(slot, body.slot2));
+
+    if (_.isUndefined(slot1) || _.isUndefined(slot2)) {
+        // TODO: return some error code
+        res.send('duh');
+    } else {
+        const name = slot1.name;
+        slot1.name = slot2.name;
+        slot2.name = name;
+        
+        res.send('Updated schedule!');
+    }
 });
 
 function init() {
