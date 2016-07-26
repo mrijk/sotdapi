@@ -41,23 +41,13 @@ app.param(['name'], (req, res, next, value) => {
 
 // return schedule for given sergeant
 app.get('/schedule', (req, res) => {
-    const dummySchedule = [
-        {
-            date: '2016-07-26AM',
-            name: 'Olaf'
-        },
-        {
-            date: '2016-07-26PM',
-            name: 'Maurits'
-        }
-
-    ];
     res.send({schedule: schedule});
 });
 
 // return schedule for given sergeant
 app.get('/schedule/:name', (req, res) => {
-    res.send({schedule: req.sergeant});
+    const mySchedule = _.filter(schedule, {name: req.sergeant});
+    res.send({schedule: mySchedule});
 });
 
 function init() {
