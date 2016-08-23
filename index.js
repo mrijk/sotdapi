@@ -18,7 +18,8 @@ const sergeants = [
     'Tobias',
     'Danny',
     'Chris O',
-    'Robert'
+    'Robert',
+    'Matthijs'
 ];
 
 // (Static) schedule 
